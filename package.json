@@ -1,0 +1,25 @@
+{
+  "name": "beinge",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "bun --watch server.ts",
+    "start": "bun run server.ts",
+    "db:migrate": "bun shared/db/migrate.ts",
+    "db:generate": "bunx drizzle-kit generate",
+    "db:seed-access": "bun scripts/seed-access.ts",
+    "test": "bun test"
+  },
+  "dependencies": {
+    "@clerk/backend": "^3.2.8",
+    "@hono/clerk-auth": "^3.1.1",
+    "drizzle-orm": "^0.45.2",
+    "hono": "^4.12.12",
+    "pdfkit": "^0.18.0",
+    "postgres": "^3.4.9"
+  },
+  "devDependencies": {
+    "@types/pdfkit": "^0.17.5",
+    "drizzle-kit": "^0.31.10"
+  }
+}

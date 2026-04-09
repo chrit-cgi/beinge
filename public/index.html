@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="nl" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>beinge</title>
+  <link rel="stylesheet" href="/styles/tokens.css" />
+  <link rel="stylesheet" href="/styles/base.css" />
+  <link rel="stylesheet" href="/styles/layout.css" />
+
+  <!-- Clerk JS (publishable key injected via meta tag read by app.js) -->
+  <meta name="clerk-publishable-key" content="" />
+
+  <!-- Web components (loaded as ES modules — parsed eagerly, instantiated lazily) -->
+  <script type="module" src="/components/onboarding-modal.js"></script>
+  <script type="module" src="/components/note-screen.js"></script>
+  <script type="module" src="/components/overview-screen.js"></script>
+  <script type="module" src="/components/insights-screen.js"></script>
+  <script type="module" src="/components/settings-screen.js"></script>
+  <script type="module" src="/components/export-dialog.js"></script>
+  <script type="module" src="/components/admin-screen.js"></script>
+
+  <!-- App controller (loaded last so DOM is ready) -->
+  <script type="module" src="/app.js"></script>
+</head>
+<body>
+
+  <!-- ── Top Bar ───────────────────────────────────────────── -->
+  <header id="topbar">
+    <button class="menu-btn" id="menu-btn" aria-label="Menu openen">&#9776;</button>
+    <span class="app-title">beinge</span>
+  </header>
+
+  <!-- ── Side Drawer ──────────────────────────────────────── -->
+  <div id="drawer-overlay" role="dialog" aria-modal="true" aria-label="Menu">
+    <nav id="drawer">
+      <div class="drawer-header">
+        <h2>Menu</h2>
+        <button class="drawer-close" id="drawer-close" aria-label="Menu sluiten">&#215;</button>
+      </div>
+      <ul class="drawer-items">
+        <li><button id="menu-settings">&#9881; Instellingen</button></li>
+        <li><button id="menu-export">&#8681; Exporteren</button></li>
+        <li class="danger"><button id="menu-logout">&#8594; Uitloggen</button></li>
+      </ul>
+    </nav>
+  </div>
+
+  <!-- ── Main Content Area ────────────────────────────────── -->
+  <main id="content">
+    <!-- Auth states -->
+    <div id="screen-login" hidden>
+      <!-- Clerk SignIn component or dev-bypass form rendered here by app.js -->
+    </div>
+    <div id="screen-no-access" hidden>
+      <div style="padding: 40px 24px; text-align: center;">
+        <p style="font-size: 17px; color: var(--color-text-muted);">Je hebt geen toegang tot deze app.</p>
+      </div>
+    </div>
+
+    <!-- App screens -->
+    <note-screen id="screen-note" hidden></note-screen>
+    <overview-screen id="screen-overview" hidden></overview-screen>
+    <insights-screen id="screen-insights" hidden></insights-screen>
+    <settings-screen id="screen-settings" hidden></settings-screen>
+    <admin-screen id="screen-admin" hidden></admin-screen>
+
+    <!-- Onboarding modal (rendered inside content, overlays note screen) -->
+    <onboarding-modal id="onboarding-modal" hidden></onboarding-modal>
+
+    <!-- Export dialog (full-screen overlay) -->
+    <export-dialog id="export-dialog" hidden></export-dialog>
+  </main>
+
+  <!-- ── Bottom Navigation ─────────────────────────────────── -->
+  <nav id="bottomnav" hidden>
+    <button class="nav-btn" id="nav-note" data-screen="note" aria-label="Notitie">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5"/>
+        <path d="M17.5 2.5a2.121 2.121 0 013 3L12 14l-4 1 1-4 7.5-7.5z"/>
+      </svg>
+      Notitie
+    </button>
+    <button class="nav-btn" id="nav-overview" data-screen="overview" aria-label="Overzicht">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/>
+        <line x1="8" y1="18" x2="21" y2="18"/>
+        <line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/>
+        <line x1="3" y1="18" x2="3.01" y2="18"/>
+      </svg>
+      Overzicht
+    </button>
+    <button class="nav-btn" id="nav-insights" data-screen="insights" aria-label="Inzichten">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+      </svg>
+      Inzichten
+    </button>
+  </nav>
+
+</body>
+</html>
