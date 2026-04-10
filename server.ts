@@ -13,6 +13,7 @@ import { accountRouter } from './app01/src/routes/account'
 import { adminRouter } from './shell/src/routes/admin'
 
 // Run migrations before binding to port
+log('info', 'db_url_debug', { url: (process.env.DATABASE_URL ?? 'NOT SET').replace(/:([^:@]+)@/, ':***@') })
 await runMigrations()
 
 const app = new Hono()
