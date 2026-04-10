@@ -30,7 +30,7 @@ app.use('*', async (ctx, next) => {
       "default-src 'self'",
       "script-src 'self' https://cdn.jsdelivr.net",
       "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net",
-      "connect-src 'self' https://clerk.accounts.dev https://*.clerk.accounts.dev https://*.clerk.dev",
+      "connect-src 'self' https://cdn.jsdelivr.net https://clerk.accounts.dev https://*.clerk.accounts.dev https://*.clerk.dev",
       "img-src 'self' data: https:",
       "font-src 'self' data:",
       "frame-ancestors 'none'",

@@ -167,10 +167,12 @@ async function loadClerk() {
     return
   }
 
-  // Wait for Clerk to be ready
-  await window.Clerk?.load()
+  // clerk.browser.js exposes Clerk as a constructor — instantiate with key then load
+  const clerk = new window.Clerk(key)
+  await clerk.load()
+  window.Clerk = clerk
 
-  window.Clerk?.addListener(({ user }) => {
+  clerk.addListener(() => {
     handleAuthState()
   })
 
