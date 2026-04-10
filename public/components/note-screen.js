@@ -11,6 +11,7 @@ class NoteScreen extends LitElement {
   }
 
   static styles = css`
+    :host([hidden]) { display: none; }
     :host { display: block; padding: 24px 16px; }
     .date-label {
       font-size: 11px;

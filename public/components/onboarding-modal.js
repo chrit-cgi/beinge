@@ -2,6 +2,7 @@ import { LitElement, html, css } from 'https://cdn.jsdelivr.net/gh/lit/dist@3/co
 
 class OnboardingModal extends LitElement {
   static styles = css`
+    :host([hidden]) { display: none; }
     :host {
       display: flex;
       position: fixed;

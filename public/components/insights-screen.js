@@ -15,6 +15,7 @@ class InsightsScreen extends LitElement {
   }
 
   static styles = css`
+    :host([hidden]) { display: none; }
     :host { display: block; padding: 24px 16px; }
     .section-label {
       font-size: 11px; font-weight: 600; text-transform: uppercase;

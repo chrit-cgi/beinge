@@ -10,6 +10,7 @@ class SettingsScreen extends LitElement {
   }
 
   static styles = css`
+    :host([hidden]) { display: none; }
     :host { display: block; padding: 24px 16px; }
     h1 { font-size: 24px; font-weight: 700; margin-bottom: 24px; }
     .setting-row {

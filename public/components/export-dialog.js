@@ -12,6 +12,7 @@ class ExportDialog extends LitElement {
   }
 
   static styles = css`
+    :host([hidden]) { display: none; }
     :host {
       display: flex; position: fixed; inset: 0;
       background: rgba(0,0,0,0.5); align-items: flex-end; justify-content: center;

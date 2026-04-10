@@ -9,7 +9,7 @@ class OverviewScreen extends LitElement {
   }
 
   static styles = css`
-    :host { display: block; padding: 0 0 16px; }
+    :host([hidden]) { display: none; }\n    :host { display: block; padding: 0 0 16px; }
     .search-bar {
       position: sticky;
       top: 0;

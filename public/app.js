@@ -149,7 +149,8 @@ async function boot() {
   })
 
   // Dev bypass mode — show simple login form
-  if (window.__CLERK_DEV_BYPASS__) {
+  const devBypass = document.querySelector('meta[name="dev-bypass"]')?.content === 'true'
+  if (devBypass) {
     showDevBypassLogin()
     return
   }
@@ -169,23 +170,14 @@ async function loadClerk() {
   // Wait for Clerk to be ready
   await window.Clerk?.load()
 
-  window.Clerk.addListener(({ user }) => {
+  window.Clerk?.addListener(({ user }) => {
     handleAuthState()
   })
 
   handleAuthState()
 }
 
-async function handleAuthState() {
-  const user = window.Clerk?.user
-  if (!user) {
-    navigate('login')
-    document.getElementById('screen-login').innerHTML = ''
-    window.Clerk?.mountSignIn(document.getElementById('screen-login'))
-    return
-  }
-
-  // Fetch shell/me to get app access + hasEntries
+async function handleAppEntry() {
   try {
     const res = await apiFetch('/api/shell/me')
     if (res.status === 401) { navigate('login'); return }
@@ -215,6 +207,18 @@ async function handleAuthState() {
   }
 }
 
+async function handleAuthState() {
+  const user = window.Clerk?.user
+  if (!user) {
+    navigate('login')
+    document.getElementById('screen-login').innerHTML = ''
+    window.Clerk?.mountSignIn(document.getElementById('screen-login'))
+    return
+  }
+
+  await handleAppEntry()
+}
+
 function showDevBypassLogin() {
   navigate('login')
   document.getElementById('screen-login').innerHTML = `
@@ -232,9 +236,8 @@ function showDevBypassLogin() {
   `
   document.getElementById('dev-login-form').addEventListener('submit', async (e) => {
     e.preventDefault()
-    // In dev bypass mode, the server accepts any request and injects local-dev-user
     await initTheme()
-    navigate('note', { date: yesterday() })
+    await handleAppEntry()
   })
 }
 

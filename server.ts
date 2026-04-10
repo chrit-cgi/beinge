@@ -74,8 +74,18 @@ app.route('/api/v1/settings', settingsRouter)
 app.route('/api/v1/export', exportRouter)
 app.route('/api/v1/account', accountRouter)
 
-// ── SPA fallback — serve index.html for all non-API routes ───
-app.use('*', serveStatic({ path: './public/index.html' }))
+// ── SPA fallback — serve index.html with runtime config injected ─
+app.use('*', async (ctx) => {
+  const html = await Bun.file('./public/index.html').text()
+  const devBypass = process.env.CLERK_DEV_BYPASS === 'true' && process.env.NODE_ENV !== 'production'
+  const clerkKey = process.env.CLERK_PUBLISHABLE_KEY ?? ''
+  const injected = html
+    .replace(
+      '<meta name="clerk-publishable-key" content="" />',
+      `<meta name="clerk-publishable-key" content="${clerkKey}" />\n  <meta name="dev-bypass" content="${devBypass}" />`
+    )
+  return ctx.html(injected)
+})
 
 const port = Number(process.env.PORT ?? 3000)
 log('info', 'server_started', { port })
