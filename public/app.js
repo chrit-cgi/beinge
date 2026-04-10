@@ -224,9 +224,7 @@ async function handleAppEntry() {
 async function handleAuthState() {
   const user = window.Clerk?.user
   if (!user) {
-    navigate('login')
-    document.getElementById('screen-login').innerHTML = ''
-    window.Clerk?.mountSignIn(document.getElementById('screen-login'))
+    await window.Clerk?.redirectToSignIn()
     return
   }
 

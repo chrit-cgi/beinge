@@ -28,8 +28,7 @@ app.use('*', async (ctx, next) => {
     'Content-Security-Policy',
     [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-eval' https://cdn.jsdelivr.net https://*.clerk.accounts.dev https://*.clerk.dev",
-      "worker-src blob: 'self'",
+      "script-src 'self' https://cdn.jsdelivr.net https://*.clerk.accounts.dev https://*.clerk.dev",
       "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net",
       "connect-src 'self' https://clerk.accounts.dev https://*.clerk.accounts.dev https://*.clerk.dev",
       "img-src 'self' data: https:",
