@@ -167,12 +167,20 @@ async function loadClerk() {
     return
   }
 
-  // clerk.browser.js exposes Clerk as a constructor — instantiate with key then load
-  const clerk = new window.Clerk(key)
-  await clerk.load()
-  window.Clerk = clerk
+  // Dynamically load clerk.browser.js with the key as a data attribute
+  // (the script auto-creates window.Clerk using data-clerk-publishable-key)
+  await new Promise((resolve, reject) => {
+    const script = document.createElement('script')
+    script.src = 'https://cdn.jsdelivr.net/npm/@clerk/clerk-js@latest/dist/clerk.browser.js'
+    script.setAttribute('data-clerk-publishable-key', key)
+    script.onload = resolve
+    script.onerror = reject
+    document.head.appendChild(script)
+  })
 
-  clerk.addListener(() => {
+  await window.Clerk.load()
+
+  window.Clerk.addListener(() => {
     handleAuthState()
   })
 
