@@ -3,7 +3,6 @@ node_modules/
 .env.local
 *.log
 bun.lockb
-drizzle/meta/
 .DS_Store
 Thumbs.db
 *.tmp
