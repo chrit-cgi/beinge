@@ -171,7 +171,7 @@ async function loadClerk() {
   // (the script auto-creates window.Clerk using data-clerk-publishable-key)
   await new Promise((resolve, reject) => {
     const script = document.createElement('script')
-    script.src = 'https://cdn.jsdelivr.net/npm/@clerk/clerk-js@latest/dist/clerk.browser.js'
+    script.src = '/clerk.browser.js'
     script.setAttribute('data-clerk-publishable-key', key)
     script.onload = resolve
     script.onerror = reject

@@ -28,10 +28,10 @@ app.use('*', async (ctx, next) => {
     'Content-Security-Policy',
     [
       "default-src 'self'",
-      "script-src 'self' https://cdn.jsdelivr.net 'unsafe-eval'",
+      "script-src 'self' 'unsafe-eval'",
       "worker-src blob: 'self'",
       "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net",
-      "connect-src 'self' https://cdn.jsdelivr.net https://clerk.accounts.dev https://*.clerk.accounts.dev https://*.clerk.dev",
+      "connect-src 'self' https://clerk.accounts.dev https://*.clerk.accounts.dev https://*.clerk.dev",
       "img-src 'self' data: https:",
       "font-src 'self' data:",
       "frame-ancestors 'none'",
@@ -54,6 +54,11 @@ app.onError((err, ctx) => {
 app.use('/styles/*', serveStatic({ root: './public' }))
 app.use('/components/*', serveStatic({ root: './public' }))
 app.use('/app.js', serveStatic({ root: './public' }))
+app.get('/clerk.browser.js', (ctx) =>
+  new Response(Bun.file('./node_modules/@clerk/clerk-js/dist/clerk.browser.js'), {
+    headers: { 'Content-Type': 'application/javascript' },
+  })
+)
 
 // ── Auth middleware on all API routes ────────────────────────
 // In dev bypass mode, skip Clerk JWT verification entirely (no valid key available)
