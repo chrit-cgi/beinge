@@ -167,11 +167,15 @@ async function loadClerk() {
     return
   }
 
-  // Dynamically load clerk.browser.js with the key as a data attribute
-  // (the script auto-creates window.Clerk using data-clerk-publishable-key)
+  // Derive the Frontend API host from the publishable key so we load
+  // clerk.browser.js from Clerk's own CDN — this ensures UI chunk files
+  // are resolved relative to the correct base URL (v6 uses code splitting)
+  const encoded = key.split('_').slice(2).join('_')
+  const frontendApi = atob(encoded).replace(/\$$/, '')
+
   await new Promise((resolve, reject) => {
     const script = document.createElement('script')
-    script.src = '/clerk.browser.js'
+    script.src = `https://${frontendApi}/npm/@clerk/clerk-js@6/dist/clerk.browser.js`
     script.setAttribute('data-clerk-publishable-key', key)
     script.onload = resolve
     script.onerror = reject
