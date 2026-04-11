@@ -28,11 +28,12 @@ app.use('*', async (ctx, next) => {
     'Content-Security-Policy',
     [
       "default-src 'self'",
-      "script-src 'self' https://cdn.jsdelivr.net https://*.clerk.accounts.dev https://*.clerk.dev",
+      "script-src 'self' https://cdn.jsdelivr.net https://*.clerk.accounts.dev https://*.clerk.dev https://challenges.cloudflare.com",
       "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net",
-      "connect-src 'self' https://clerk.accounts.dev https://*.clerk.accounts.dev https://*.clerk.dev",
+      "connect-src 'self' https://clerk.accounts.dev https://*.clerk.accounts.dev https://*.clerk.dev https://challenges.cloudflare.com",
       "img-src 'self' data: https:",
       "font-src 'self' data:",
+      "frame-src https://challenges.cloudflare.com",
       "frame-ancestors 'none'",
     ].join('; ')
   )
