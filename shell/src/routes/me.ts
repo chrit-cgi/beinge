@@ -11,8 +11,9 @@ export const shellMeRouter = new Hono()
 shellMeRouter.use('*', rateLimit({ limit: 60, windowMs: 60_000, key: 'shell-me' }))
 
 shellMeRouter.get('/me', async (ctx) => {
-  const auth = ctx.get('clerkAuth') as { userId: string }
+  const auth = ctx.get('clerkAuth') as { userId: string; sessionClaims?: { publicMetadata?: { role?: string } } }
   const userId = auth.userId
+  const isAdmin = (auth.sessionClaims?.publicMetadata as { role?: string } | undefined)?.role === 'admin'
 
   // Determine which apps this user has access to
   const accessRows = await db
@@ -30,7 +31,7 @@ shellMeRouter.get('/me', async (ctx) => {
 
   const hasEntries = Number(countRow?.count ?? 0) > 0
 
-  log('info', 'shell_me', { userId, apps, hasEntries })
+  log('info', 'shell_me', { userId, apps, hasEntries, isAdmin })
 
-  return ctx.json({ userId, apps, hasEntries })
+  return ctx.json({ userId, apps, hasEntries, isAdmin })
 })

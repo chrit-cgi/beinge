@@ -133,6 +133,10 @@ async function boot() {
     closeDrawer()
     document.getElementById('export-dialog').hidden = false
   })
+  document.getElementById('menu-admin').addEventListener('click', () => {
+    closeDrawer()
+    navigate('admin')
+  })
   document.getElementById('menu-logout').addEventListener('click', async () => {
     await window.Clerk?.signOut()
     location.reload()
@@ -197,7 +201,11 @@ async function handleAppEntry() {
     if (res.status === 401) { navigate('login'); return }
     if (res.status === 403) { navigate('no-access'); return }
 
-    const { hasEntries } = await res.json()
+    const { hasEntries, isAdmin } = await res.json()
+
+    if (isAdmin) {
+      document.getElementById('menu-admin-item').hidden = false
+    }
 
     // Apply theme before first render to avoid flash
     await initTheme()

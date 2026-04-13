@@ -22,6 +22,7 @@ export const app01AccessMiddleware = createMiddleware(async (ctx, next) => {
 
   // Dev bypass: skip JWT verification, inject hardcoded userId (non-production only)
   let userId: string
+  let sessionClaims: ReturnType<typeof getAuth>['sessionClaims'] | undefined
   if (process.env.CLERK_DEV_BYPASS === 'true') {
     if (process.env.NODE_ENV === 'production') {
       log('error', 'dev_bypass_in_production_blocked', { path })
@@ -35,6 +36,7 @@ export const app01AccessMiddleware = createMiddleware(async (ctx, next) => {
       return ctx.json({ error: 'Unauthorized' }, 401)
     }
     userId = auth.userId
+    sessionClaims = auth.sessionClaims
   }
 
   // Check app01 access on every request — no caching (FR-008)
@@ -49,6 +51,6 @@ export const app01AccessMiddleware = createMiddleware(async (ctx, next) => {
     return ctx.json({ error: 'No app access' }, 403)
   }
 
-  ctx.set('clerkAuth', { userId, sessionId: 'dev-session' })
+  ctx.set('clerkAuth', { userId, sessionId: 'dev-session', sessionClaims })
   await next()
 })
